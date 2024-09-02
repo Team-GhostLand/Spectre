@@ -1,12 +1,14 @@
 #!/bin/bash
 
 
-echo " ---SCAFFOLDING STARTED! :: STEP 1/5: SETTINGS---";
 
 if [ "$EUID" -ne 0 ]; then
     echo "ERROR: This script must be ran as root!";
     exit 1;
 fi
+
+
+echo " ---SCAFFOLDING STARTED! :: STEP 1/5: SETTINGS---";
 
 if [ -z "$PROJECT_NAME" ]; then
     PROJECT_NAME="ghostland"
@@ -31,13 +33,13 @@ fi
 
 if [ -z "$GITHUB" ]; then
     if [ -z "$GIT" ]; then
-        STRATEGY="LOCAL"
+        STRATEGY="ARCHIVE"
         if [ -z "$SOURCE" ]; then
-            REPORTED_SOURCE="LOCAL"
+            REPORTED_SOURCE="ARCHIVE"
         else
-            REPORTED_SOURCE="LOCAL // DOWNLOAD FROM: $SOURCE"
+            REPORTED_SOURCE="ARCHIVE // DOWNLOAD FROM: $SOURCE"
             if [ "$SOURCE" == "EXPECT" ]; then
-                REPORTED_SOURCE="LOCAL // EXPECT PRESENT"
+                REPORTED_SOURCE="ARCHIVE // EXPECT PRESENT"
             fi
         fi
     else
@@ -72,8 +74,8 @@ echo "  > Make the script's happy-path fully non-interactive: $NON_INTERACTIVE_H
 sleep 3;
 echo;
 echo " ---STEP 2/5: OBTAINING THE FILES USING...---";
-if [ "$STRATEGY" == "LOCAL" ]; then
-    echo "...the \`LOCAL\` strategy.";
+if [ "$STRATEGY" == "ARCHIVE" ]; then
+    echo "...the \`ARCHIVE\` strategy.";
     if [ -e "$PROJECT_NAME.zip" ]; then
         echo "File already found. Great! Moving on.";
     else
