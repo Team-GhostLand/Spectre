@@ -89,8 +89,11 @@ if [ "$STRATEGY" == "ARCHIVE" ]; then
         if [ -z "$SOURCE" ]; then
             echo "...wait until it appears.";
             chmod --verbose 777 .;
-            echo "AWAITING FOR: $(pwd)/$PROJECT_NAME.zip..."
-            echo ""
+            echo "AWAITING FOR: $(pwd)/$PROJECT_NAME.zip...";
+            echo "";
+            echo "Now's the time to ask your friend to \`scp\` project files in there, or";
+            echo "do it yourself if you can, or just \`cp\` them, if they're on device already.";
+            echo "";
             echo "For your conveinience, we temproarily made $(pwd) freely accessible.";
             echo "This is very useful for tools that can't operate as root, but can cause";
             echo "security problems, should you decide to cancel this operation.";
