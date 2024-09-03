@@ -127,34 +127,35 @@ if [ "$STRATEGY" == "ARCHIVE" ]; then
                 exit 1;
             fi
         fi
+    fi
 
-        echo;
-        echo " ---STEP 2a/5b: UNZIPPING---";
-        sleep 1;
-        ZIP_ONCE="YES"
-        while [ "$ZIP_RETRY" == "YES" ]; do
-            unzip "$PROJECT_NAME.zip";
-            if [ $? -ne 0 ]; then
-                echo "ERROR: Unzip failed. Waiting 30s and trying again...";
-                sleep 30;
-            else
-                echo "Unzipped succesfully!"
-                ZIP_RETRY="NO"
-                ZIP_ONCE="NO"
-            fi
-        done
-
-        if [ "$ZIP_ONCE" == "YES" ]; then
-            if [ $? -ne 0 ]; then
-                echo "ERROR: Unzip failed. See above for more info.";
-                rm -d "/var/spectre/$PROJECT_NAME";
-                exit 1;
-            fi
+    echo;
+    echo " ---STEP 2a/5b: UNZIPPING---";
+    sleep 1;
+    ZIP_ONCE="YES"
+    while [ "$ZIP_RETRY" == "YES" ]; do
+        unzip "$PROJECT_NAME.zip";
+        if [ $? -ne 0 ]; then
+            echo "ERROR: Unzip failed. Waiting 30s and trying again...";
+            sleep 30;
+        else
+            echo "Unzipped succesfully!"
+            ZIP_RETRY="NO"
+            ZIP_ONCE="NO"
         fi
+    done
 
-        echo;
-        echo " ---STEP 2b/5b: CLEANUP---";
-        rm --verbose "$PROJECT_NAME.zip";
+    if [ "$ZIP_ONCE" == "YES" ]; then
+        if [ $? -ne 0 ]; then
+            echo "ERROR: Unzip failed. See above for more info.";
+            rm -d "/var/spectre/$PROJECT_NAME";
+            exit 1;
+        fi
+    fi
+
+    echo;
+    echo " ---STEP 2b/5b: CLEANUP---";
+    rm --verbose "$PROJECT_NAME.zip";
         if [ $? -ne 0 ]; then
             echo "NOTE: Couldn't clean up. This is non-critical,";
             echo "but you'll need to remember to manually remove:";
@@ -162,8 +163,7 @@ if [ "$STRATEGY" == "ARCHIVE" ]; then
             echo "Press any key to continue...";
             read -r -n 1 -s;
         fi
-        chmod --verbose 777 "$(pwd)/$PROJECT_NAME/$SCRIPT_NAME.sh";
-    fi
+    chmod --verbose 777 "$(pwd)/$PROJECT_NAME/$SCRIPT_NAME.sh";
 fi
 
 if [ "$STRATEGY" == "GITHUB" ]; then
