@@ -98,17 +98,16 @@ if [ "$STRATEGY" == "ARCHIVE" ]; then
             echo "For your conveinience, we temproarily made $(pwd) freely accessible.";
             echo "This is very useful for tools that can't operate as root, but can cause";
             echo "security problems, should you decide to cancel this operation.";
-            echo "Plese press ANY SINGLE KEY to cancel instead of using Ctrl+C,";
-            echo "or remember to do \`chmod 555 $(pwd)\` if you use Ctrl+C.";
+            echo "Please remember to do \`chmod 555 $(pwd)\` if you use Ctrl+C now.";
             while [ ! -e "$PROJECT_NAME.zip" ]; do
-                read -r -n 1 -s -t 1;
-                echo "Read timed out. Is said: $?";
-                if [ $? -eq 0 ]; then
-                    chmod --verbose 555 .;
-                    echo "NOTE: Safely cancelled.";
-                    rm -d "/var/spectre/$PROJECT_NAME";
-                    exit 0;
-                fi
+                :
+                #read -r -n 1 -s -t 1;
+                #if [ $? -eq 0 ]; then
+                    #chmod --verbose 555 .;
+                    #echo "NOTE: Safely cancelled.";
+                    #rm -d "/var/spectre/$PROJECT_NAME";
+                    #exit 0;
+                #fi
             done
             echo "File found!";
             chmod --verbose 555 .;
