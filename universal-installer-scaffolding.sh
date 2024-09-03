@@ -102,6 +102,7 @@ if [ "$STRATEGY" == "ARCHIVE" ]; then
             echo "or remember to do \`chmod 555 $(pwd)\` if you use Ctrl+C.";
             while [ ! -e "$PROJECT_NAME.zip" ]; do
                 read -r -n 1 -s -t 1;
+                echo "$?";
                 if [ $? -eq 0 ]; then
                     chmod --verbose 555 .;
                     echo "NOTE: Safely cancelled.";
