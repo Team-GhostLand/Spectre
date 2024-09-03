@@ -31,6 +31,8 @@ else
     NON_INTERACTIVE_HAPPY_PATH="YES"
 fi
 
+ZIP_RETRY="NO"
+
 if [ -z "$GITHUB" ]; then
     if [ -z "$GIT" ]; then
         STRATEGY="ARCHIVE"
@@ -112,6 +114,7 @@ if [ "$STRATEGY" == "ARCHIVE" ]; then
             echo "File found!";
             chmod --verbose 555 .;
             echo "NOTE: $(pwd) is secure again";
+            ZIP_RETRY="YES"
         else
             echo "...download it from $SOURCE.";
             wget "$SOURCE";
@@ -128,11 +131,25 @@ if [ "$STRATEGY" == "ARCHIVE" ]; then
         echo;
         echo " ---STEP 2a/5b: UNZIPPING---";
         sleep 1;
-        unzip "$PROJECT_NAME.zip";
-        if [ $? -ne 0 ]; then
-            echo "ERROR: Unzip failed. See above for more info.";
-            rm -d "/var/spectre/$PROJECT_NAME";
-            exit 1;
+        ZIP_ONCE="YES"
+        while [ "$ZIP_RETRY" == "YES" ]; do
+            unzip "$PROJECT_NAME.zip";
+            if [ $? -ne 0 ]; then
+                echo "ERROR: Unzip failed. Waiting 5s and trying again...";
+                sleep 30;
+            else
+                echo "Unzipped succesfully!"
+                ZIP_RETRY="NO"
+                ZIP_ONCE="NO"
+            fi
+        done
+
+        if [ "$ZIP_ONCE" == "YES" ]; then
+            if [ $? -ne 0 ]; then
+                echo "ERROR: Unzip failed. See above for more info.";
+                rm -d "/var/spectre/$PROJECT_NAME";
+                exit 1;
+            fi
         fi
 
         echo;
