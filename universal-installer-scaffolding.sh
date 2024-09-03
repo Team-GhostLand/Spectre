@@ -189,7 +189,7 @@ fi
 sleep 3;
 echo;
 echo " ---STEP 3/5: SEDDING---";
-sed -i -e "s/%INSTALL_PATH%/$INSTALL_PATH/g" "./$PROJECT_NAME/$SCRIPT_NAME.sh";
+sed -i -e "s:%INSTALL_PATH%:$INSTALL_PATH:g" "./$PROJECT_NAME/$SCRIPT_NAME.sh";
 if [ $? -ne 0 ]; then
     echo "SED operation failed! Couldn't set %INSTALL_PATH% to $INSTALL_PATH.";
     echo "Nevertheless, scaffolding is already done, so the script will now exit.";
