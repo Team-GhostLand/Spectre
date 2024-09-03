@@ -25,12 +25,6 @@ if [ -z "$INSTALL_PATH" ]; then
     DF_INSTALL_PATH="  (default)"
 fi
 
-if [ -z "$NON_INTERACTIVE_HAPPY_PATH" ]; then
-    NON_INTERACTIVE_HAPPY_PATH="NO"
-else
-    NON_INTERACTIVE_HAPPY_PATH="YES"
-fi
-
 ZIP_RETRY="NO"
 
 if [ -z "$GITHUB" ]; then
@@ -65,13 +59,12 @@ fi
 cd /var/spectre || exit;
 
 
-echo "  > Version: 1.0";
+echo "  > Version: 1.1";
 echo "  > Project name: $PROJECT_NAME $DF_PROJECT_NAME";
 echo "  > Source: $REPORTED_SOURCE";
 echo "  > Running from: $(pwd)";
 echo "  > Post-scaffold script name: $SCRIPT_NAME $DF_SCRIPT_NAME";
 echo "  > Installed binary path: $INSTALL_PATH $DF_INSTALL_PATH";
-echo "  > Make the script's happy-path fully non-interactive: $NON_INTERACTIVE_HAPPY_PATH";
 
 sleep 3;
 echo;
