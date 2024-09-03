@@ -65,7 +65,7 @@ fi
 cd /var/spectre || exit;
 
 
-echo "  > Version: 0.9";
+echo "  > Version: 1.0";
 echo "  > Project name: $PROJECT_NAME $DF_PROJECT_NAME";
 echo "  > Source: $REPORTED_SOURCE";
 echo "  > Running from: $(pwd)";
