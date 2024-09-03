@@ -63,7 +63,7 @@ fi
 cd /var/spectre || exit;
 
 
-echo "  > Version: 0.2";
+echo "  > Version: 0.9";
 echo "  > Project name: $PROJECT_NAME $DF_PROJECT_NAME";
 echo "  > Source: $REPORTED_SOURCE";
 echo "  > Running from: $(pwd)";
@@ -83,6 +83,7 @@ if [ "$STRATEGY" == "ARCHIVE" ]; then
 
         if [ "$SOURCE" == "EXPECT" ]; then
             echo "...crash the script, because it should be there.";
+            rm -d "/var/spectre/$PROJECT_NAME";
             exit 1;
         fi
 
@@ -104,6 +105,7 @@ if [ "$STRATEGY" == "ARCHIVE" ]; then
                 if [ $? -eq 0 ]; then
                     chmod --verbose 555 .;
                     echo "NOTE: Safely cancelled.";
+                    rm -d "/var/spectre/$PROJECT_NAME";
                     exit 0;
                 fi
             done
@@ -118,6 +120,7 @@ if [ "$STRATEGY" == "ARCHIVE" ]; then
             else
                 echo "ERROR: \`wget\` finnished running, but the $PROJECT_NAME.zip file";
                 echo "doesn't seem to exist. Cannot operate. See above for more info.";
+                rm -d "/var/spectre/$PROJECT_NAME";
                 exit 1;
             fi
         fi
@@ -128,6 +131,7 @@ if [ "$STRATEGY" == "ARCHIVE" ]; then
         unzip "$PROJECT_NAME.zip";
         if [ $? -ne 0 ]; then
             echo "ERROR: Unzip failed. See above for more info.";
+            rm -d "/var/spectre/$PROJECT_NAME";
             exit 1;
         fi
 
@@ -150,6 +154,7 @@ if [ "$STRATEGY" == "GITHUB" ]; then
     gh repo clone "$GITHUB" "$PROJECT_NAME";
     if [ $? -ne 0 ]; then
         echo "ERROR: GitHub operation failed. See above for more info.";
+        rm -d "/var/spectre/$PROJECT_NAME";
         exit 1;
     fi
 fi
@@ -159,6 +164,7 @@ if [ "$STRATEGY" == "GIT" ]; then
     git clone "$GIT" "$PROJECT_NAME";
     if [ $? -ne 0 ]; then
         echo "ERROR: Git operation failed. See above for more info.";
+        rm -d "/var/spectre/$PROJECT_NAME";
         exit 1;
     fi
 fi
