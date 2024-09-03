@@ -136,8 +136,8 @@ if [ "$STRATEGY" == "ARCHIVE" ]; then
     while [ "$ZIP_RETRY" == "YES" ]; do
         unzip "$PROJECT_NAME.zip";
         if [ $? -ne 0 ]; then
-            echo "ERROR: Unzip failed. Waiting 30s and trying again...";
-            sleep 30;
+            echo "ERROR: Unzip failed. Waiting 10s and trying again...";
+            sleep 10;
         else
             echo "Unzipped succesfully!"
             ZIP_RETRY="NO"
