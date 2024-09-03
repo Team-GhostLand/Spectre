@@ -225,17 +225,21 @@ echo "If you can see \`help\` output above - good news!";
 echo "Scaffolding completed successfully! One more thing left:";
 echo "\$ ./$PROJECT_NAME/$SCRIPT_NAME.sh install";
 echo "The aforementioned command will run the actual installer.";
-echo "Press any key to execute it...";
-echo "(Or Ctrl+C to leave it ready-to-install, but not installed.)";
 if [ "$NON_INTERACTIVE_HAPPY_PATH" == "YES" ]; then
-    echo "SIKE! No keypress needed - it will be simulated in 5s. This happy-path is fully non-interactive.";
+    echo "It will automatically execute in 5 seconds.";
     sleep 5;
+    echo;
+    echo;
+    echo "BOOTING UP THE INSTALLER...";
+    echo;
 else
+    echo "Press any key to execute it...";
+    echo "(Or Ctrl+C to leave it ready-to-install, but not installed.)";
     read -r -n 1 -s;
+    echo;
+    echo;
+    echo "KEYPRESS DETECTED - BOOTING UP THE INSTALLER...";
+    echo;
 fi
-echo;
-echo;
-echo "KEYPRESS DETECTED - BOOTING UP THE INSTALLER...";
-echo;
 "./$PROJECT_NAME/$SCRIPT_NAME.sh" install;
 exit;
