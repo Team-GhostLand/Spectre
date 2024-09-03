@@ -154,7 +154,7 @@ if [ "$STRATEGY" == "GITHUB" ]; then
     gh repo clone "$GITHUB" "$PROJECT_NAME";
     if [ $? -ne 0 ]; then
         echo "ERROR: GitHub operation failed. See above for more info.";
-        rm -dv "/var/spectre/$PROJECT_NAME";
+        rm -d "/var/spectre/$PROJECT_NAME";
         exit 1;
     fi
 fi
