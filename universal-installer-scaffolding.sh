@@ -146,6 +146,7 @@ if [ "$STRATEGY" == "ARCHIVE" ]; then
     done
 
     if [ "$ZIP_ONCE" == "YES" ]; then
+        unzip "$PROJECT_NAME.zip";
         if [ $? -ne 0 ]; then
             echo "ERROR: Unzip failed. See above for more info.";
             rm -d "/var/spectre/$PROJECT_NAME";
