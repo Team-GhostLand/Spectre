@@ -1,5 +1,5 @@
 #!/bin/bash
-
+# shellcheck disable=SC2181
 
 
 if [ "$EUID" -ne 0 ]; then
@@ -59,7 +59,7 @@ fi
 cd /var/spectre || exit;
 
 
-echo "  > Version: 1.2";
+echo "  > Version: 1.3";
 echo "  > Project name: $PROJECT_NAME $DF_PROJECT_NAME";
 echo "  > Source: $REPORTED_SOURCE";
 echo "  > Running from: $(pwd)";
