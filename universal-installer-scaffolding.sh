@@ -59,7 +59,7 @@ fi
 cd /var/spectre || exit;
 
 
-echo "  > Version: 1.1";
+echo "  > Version: 1.2";
 echo "  > Project name: $PROJECT_NAME $DF_PROJECT_NAME";
 echo "  > Source: $REPORTED_SOURCE";
 echo "  > Running from: $(pwd)";
@@ -96,13 +96,7 @@ if [ "$STRATEGY" == "ARCHIVE" ]; then
             echo "Please remember to do \`chmod 555 $(pwd)\` if you use Ctrl+C now.";
             while [ ! -e "$PROJECT_NAME.zip" ]; do
                 :
-                #read -r -n 1 -s -t 1;
-                #if [ $? -eq 0 ]; then
-                    #chmod --verbose 555 .;
-                    #echo "NOTE: Safely cancelled.";
-                    #rm -d "/var/spectre/$PROJECT_NAME";
-                    #exit 0;
-                #fi
+                #Now we wait until the file appears...
             done
             echo "File found!";
             chmod --verbose 555 .;
@@ -124,6 +118,10 @@ if [ "$STRATEGY" == "ARCHIVE" ]; then
 
     echo;
     echo " ---STEP 2a/5b: UNZIPPING---";
+    # === WHAT ARE THESE VARS? ===
+    # By default, we set ZIP_RETRY to NO (line 28), so that we only attempt to unzip once (useful for web downloads / if we expect the file to already be there)
+    # If we don't expect the file to be there until someone uploads it - we set ZIP_RETRY to YES (line 104), so that we'll perpetually try unzipping it until it works (ie. until the file finishes uploading).
+    # ZIP_ONCE is the inversion of ZIP_RETRY, ie. if we're not trying to retry our unzip - we obviously want to only run it once (and vice-versa: if we want to retry the unzip - we'd naturally want it to run more than once).
     sleep 1;
     ZIP_ONCE="YES"
     while [ "$ZIP_RETRY" == "YES" ]; do
