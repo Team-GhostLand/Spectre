@@ -2,13 +2,16 @@
 # shellcheck disable=SC2181
 
 
-if [ "$EUID" -ne 0 ]; then
-    echo "ERROR: This script must be ran as root!";
-    exit 1;
-fi
-
-
 echo " ---SCAFFOLDING STARTED! :: STEP 1/5: SETTINGS---";
+
+if [ -z "$SPECTRE_PATH" ]; then
+    SPECTRE_PATH="/var/spectre"
+    DF_SPECTRE_PATH="  (default)"
+    if [ "$EUID" -ne 0 ]; then
+        echo "ERROR: When using the default \$SPECTRE_PATH, this script must be ran as root!";
+        exit 1;
+    fi
+fi
 
 if [ -z "$PROJECT_NAME" ]; then
     PROJECT_NAME="ghostland"
@@ -47,24 +50,24 @@ else
     REPORTED_SOURCE="GITHUB: $GITHUB"
 fi
 
-mkdir -p "/var/spectre";
-mkdir "/var/spectre/$PROJECT_NAME";
-
-if [ $? -ne 0 ]; then
-    echo "ERROR: It would appear as though \`$PROJECT_NAME\` already exists"
-    echo "or /var/spectre is unwriteable. See above for more info.";
-    exit 1;
-fi
-
-cd /var/spectre || exit;
 
 
-echo "  > Version: 1.3";
+echo "  > Version: 1.4";
 echo "  > Project name: $PROJECT_NAME $DF_PROJECT_NAME";
 echo "  > Source: $REPORTED_SOURCE";
-echo "  > Running from: $(pwd)";
+echo "  > Running from: $SPECTRE_PATH $DF_SPECTRE_PATH";
 echo "  > Post-scaffold script name: $SCRIPT_NAME $DF_SCRIPT_NAME";
 echo "  > Installed binary path: $INSTALL_PATH $DF_INSTALL_PATH";
+
+mkdir -p "$SPECTRE_PATH";
+cd "$SPECTRE_PATH" || exit;
+
+mkdir "$PROJECT_NAME";
+if [ $? -ne 0 ]; then
+    echo "ERROR: It would appear as though \`$PROJECT_NAME\` already exists"
+    echo "or $(pwd) is unwriteable. See above for more info.";
+    exit 1;
+fi
 
 sleep 3;
 echo;
@@ -78,7 +81,7 @@ if [ "$STRATEGY" == "ARCHIVE" ]; then
 
         if [ "$SOURCE" == "EXPECT" ]; then
             echo "...crash the script, because it should be there.";
-            rm -d "/var/spectre/$PROJECT_NAME";
+            rm -d "$PROJECT_NAME";
             exit 1;
         fi
 
@@ -110,7 +113,7 @@ if [ "$STRATEGY" == "ARCHIVE" ]; then
             else
                 echo "ERROR: \`wget\` finnished running, but the $PROJECT_NAME.zip file";
                 echo "doesn't seem to exist. Cannot operate. See above for more info.";
-                rm -d "/var/spectre/$PROJECT_NAME";
+                rm -d "$PROJECT_NAME";
                 exit 1;
             fi
         fi
@@ -140,7 +143,7 @@ if [ "$STRATEGY" == "ARCHIVE" ]; then
         unzip "$PROJECT_NAME.zip";
         if [ $? -ne 0 ]; then
             echo "ERROR: Unzip failed. See above for more info.";
-            rm -d "/var/spectre/$PROJECT_NAME";
+            rm -d "$PROJECT_NAME";
             exit 1;
         fi
     fi
@@ -163,7 +166,7 @@ if [ "$STRATEGY" == "GITHUB" ]; then
     gh repo clone "$GITHUB" "$PROJECT_NAME";
     if [ $? -ne 0 ]; then
         echo "ERROR: GitHub operation failed. See above for more info.";
-        rm -d "/var/spectre/$PROJECT_NAME";
+        rm -d "$PROJECT_NAME";
         exit 1;
     fi
 fi
@@ -173,7 +176,7 @@ if [ "$STRATEGY" == "GIT" ]; then
     git clone "$GIT" "$PROJECT_NAME";
     if [ $? -ne 0 ]; then
         echo "ERROR: Git operation failed. See above for more info.";
-        rm -d "/var/spectre/$PROJECT_NAME";
+        rm -d "$PROJECT_NAME";
         exit 1;
     fi
 fi
