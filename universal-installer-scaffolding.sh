@@ -52,7 +52,7 @@ fi
 
 
 
-echo "  > Version: 1.4";
+echo "  > Version: 1.5";
 echo "  > Project name: $PROJECT_NAME $DF_PROJECT_NAME";
 echo "  > Source: $REPORTED_SOURCE";
 echo "  > Running from: $SPECTRE_PATH $DF_SPECTRE_PATH";
